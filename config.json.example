@@ -1,0 +1,24 @@
+{
+    "navigation": [
+        {
+            "page": "index.html",
+            "name": "Home"
+        },
+        {
+            "page": "other.html",
+            "name": "Other"
+        }
+    ],
+    "pages": [
+        {
+            "output_file": "index.html",
+            "input_file": "index.html",
+            "title": "Home"
+        },
+        {
+            "output_file": "other.html",
+            "input_file": "other.html"
+            "title": "Other"
+        }
+    ]
+}

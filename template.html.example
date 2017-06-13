@@ -1,0 +1,10 @@
+<html>
+<head>
+    <title>{title}</title>
+</head>
+<body>
+    <ul>{navigation}</ul>
+    <div>
+        {body}
+    </div>
+</body>
