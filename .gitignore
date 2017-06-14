@@ -3,3 +3,14 @@ config.json
 template.html
 site/*.html
 content/*.html
+Vagrantfile
+.vagrant
+site/*.psd
+site/*.afdesign
+site/*.css
+site/*.js
+site/images/*.jpg
+site/images/*.png
+site/images/*.gif
+site/images/*.jpeg
+site/.gitignore
