@@ -17,7 +17,7 @@
         },
         {
             "output_file": "other.html",
-            "input_file": "other.html"
+            "input_file": "other.html",
             "title": "Other"
         }
     ]
