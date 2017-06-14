@@ -72,14 +72,17 @@ def main():
             template = template_file.read()
 
         for page in config['pages']:
-            with open(args.destination + '/' + page['output_file'], 'w') as outfile:
+            output_file = page['input_file']
+            if 'output_file' in page:
+                output_file = page['output_file']
+            with open(args.destination + '/' + output_file, 'w') as outfile:
                 with open(args.content + '/' + page['input_file']) as infile:
                     source = infile.read()
 
                 outfile.write(
                     template.format(
                         title=page['title'],
-                        navigation=navigation_format(config['navigation'], page['output_file']),
+                        navigation=navigation_format(config['navigation'], output_file),
                         body=source
                     )
                 )
