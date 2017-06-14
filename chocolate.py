@@ -37,12 +37,19 @@ def navigation_format(navigation, page):
     out_nav = ''
     try:
         for nav in navigation:
-            out_nav += '<li class="'
+            classes = []
             if nav['page'] == page:
-                out_nav += 'selected '
+                classes.append('selected')
             if 'classname' in nav:
-                out_nav += nav['classname']
-            out_nav += '">' + nav['name'] + '</li>'
+                classes.append(nav['classname'])
+            link = nav['page']
+            if link == 'index.html':
+                link = ''
+
+            out_nav += '<li'
+            if len(classes):
+                out_nav += ' class="' + ' '.join(classes) + '"'
+            out_nav += '><a href="/' + link + '">' + nav['name'] + '</a></li>\n'
     except Exception as e:
         print('There was an error creating the navigation: {0}'.format(e))
 
