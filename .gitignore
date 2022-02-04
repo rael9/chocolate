@@ -2,7 +2,7 @@ chocolate.iml
 config.json
 template.html
 site/*.html
-content/*.html
+content/*
 Vagrantfile
 .vagrant
 site/*.psd

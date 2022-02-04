@@ -10,22 +10,39 @@ Installation
 
 That should be it.
 
+NOTICE
+------
+
+Version 2 has changed the format of the config.json. If you don't need the new features, you can continue to use your current config with version 1.
+
 Usage
 -----
 
-Create a config.json file. This should have a `navigation` list and a `pages` list.
+Create a config.json file. This should have at least a `pages` array, and optionally a `settings` object.
 
-Each `navigation` item should have a `page` which is the name of the html file this link should navigate to, and a `name`, which is the text for the link. It can also have a `classname` if you want the specific `li` to have a class. The navigation will be returned as an `li` for each nav item, with a `selected` class on the current page.
+Each `pages` entry should be an object with the following properties:
 
-Each `pages` item should have a `input_file` which is the filename of the content file to pull the HTML from and a `title` which is the title of the page. You can also have an `output_file` if you want it to be something other than the `input_file` name.
+ - `input_file` (required) which is the filename of the content file to pull the HTML from
+ - `output_file` (optional) if you want the output file to be something other than the `input_file` name.
+ - `title` (required) which is the title of the page.
+ - `name` (required) which is the text that will be used for the navigation link for this page.
+ - `classname` (optional) to add a class to the navigation link.
+ - `nav_exclude` (optional) if this is set to `true`, it will exclude this page from the navigation.
 
-Use the config.json.example as a starting point.
+The `settings` object has the following possible properties:
 
-Create a template.html file. This should have {navigation} where you want the navigation to be, and {body} where you want the HTML you create to be. Use template.html.example as a starting point.
+ - `auto_index` which if set to `true` will tell the script to generate an index with the specifications set in the other properties.
+ - `index_length` which is the number of previews of pages to put on the index.
+ - `preview_length` which is the number of paragrahs to use for each preview.
+ - `slug_class` which is the class to get the slug (preview title) from.
+
+You can use the config.json.example as a starting point.
+
+Create a template.html file. This should have `{navigation}` where you want the navigation to be, and `{body}` where you want the HTML you create to be. Use template.html.example as a starting point.
 
 Create the HTML files you want to be your pages in the 'content' folder.
 
-Run ./chocolate.py.
+Run ./chocolate.py (add the -h flag if you want to see the optional flags).
 
 Your new site will be in 'site'.
 

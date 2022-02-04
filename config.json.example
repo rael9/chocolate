@@ -1,24 +1,22 @@
 {
-    "navigation": [
-        {
-            "page": "index.html",
-            "name": "Home"
-        },
-        {
-            "page": "other.html",
-            "name": "Other"
-        }
-    ],
+    "settings": {
+        "auto_index": true,
+        "index_length": 10,
+        "preview_length": 1,
+        "slug_class": "slug"
+    },
     "pages": [
         {
             "output_file": "index.html",
             "input_file": "index.html",
-            "title": "Home"
+            "title": "Home",
+            "name": "Home"
         },
         {
             "output_file": "other.html",
             "input_file": "other.html",
-            "title": "Other"
+            "title": "Other",
+            "name": "Other"
         }
     ]
 }
