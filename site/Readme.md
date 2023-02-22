@@ -1,1 +1,0 @@
-This is your site. You should put all of your JS and CSS and everything in here.
