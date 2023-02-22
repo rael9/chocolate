@@ -84,29 +84,28 @@ def main():
         exit()
 
     # Get settings from the config
+    settings = {}
     if 'settings' in config:
-        auto_index = config['settings'].get('auto_index', False)
-        index_length = config['settings'].get('index_length', 10)
-        index_title = config['settings'].get('index_title', 'Home')
-        preview_length = config['settings'].get('preview_length', 1)
-        slug_class = config['settings'].get('slug_class', 'slug')
-    else:
-        auto_index = False
-        index_length = 0
+        settings = config['settings']
+    auto_index = settings.get('auto_index', False)
+    index_length = settings.get('index_length', 10)
+    index_title = settings.get('index_title', 'Home')
+    preview_length = settings.get('preview_length', 1)
+    nav_inc_index = settings.get('nav_inc_index', False)
+    slug_class = settings.get('slug_class', 'slug')
 
     count = 0
 
     # If configured, set up to auto-generate the index
-    if auto_index:
-        if nav_inc_index:
-            index_item = {
-                "page": "index.html",
-                "name": index_title
-            }
-            config['navigation'] = [index_item] + config['navigation']
-        index_items = []
-        preview_matcher = re.compile(r"(<p[^>]*>.*?</p>)")
-        slug_matcher = re.compile(r'(<[^>]+class="{0}"[^>]*>[^<]+<[^>]+>)'.format(slug_class))
+    if auto_index and nav_inc_index:
+        index_item = {
+            "page": "index.html",
+            "name": index_title
+        }
+        config['navigation'] = [index_item] + config['navigation']
+    index_items = []
+    preview_matcher = re.compile(r"(<p[^>]*>.*?</p>)")
+    slug_matcher = re.compile(r'(<[^>]+class="{0}"[^>]*>[^<]+<[^>]+>)'.format(slug_class))
 
     # Process the site
     try:

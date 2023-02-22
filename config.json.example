@@ -3,6 +3,7 @@
         "auto_index": true,
         "index_length": 10,
         "preview_length": 1,
+        "nav_inc_index": true,
         "slug_class": "slug"
     },
     "pages": [
