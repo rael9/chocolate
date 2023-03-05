@@ -48,3 +48,15 @@ Run `./chocolate.py` (add the `-h` flag if you want to see the optional flags).
 Your new site will be in `site`.
 
 You should put any CSS, JS, etc. in the `site` folder for testing purposes. Deployment is as easy as copying the contents of the `site` folder to your hosting platform.
+
+Changelog
+---------
+
+## 2.1.0
+Added navigation support.
+
+## 2.0.0
+Refactored the script to simplify the configuration and usage.
+
+## 1.0.0
+Initial release.

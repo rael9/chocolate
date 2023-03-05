@@ -3,6 +3,7 @@
 import argparse
 import json
 import re
+import sys
 
 
 def init_args():
@@ -89,21 +90,15 @@ def main():
         settings = config['settings']
     auto_index = settings.get('auto_index', False)
     index_length = settings.get('index_length', 10)
-    index_title = settings.get('index_title', 'Home')
     preview_length = settings.get('preview_length', 1)
-    nav_inc_index = settings.get('nav_inc_index', False)
     slug_class = settings.get('slug_class', 'slug')
 
     count = 0
+    page_num = 0
+    pages = -(len(config['pages']) // -(index_length))
 
-    # If configured, set up to auto-generate the index
-    if auto_index and nav_inc_index:
-        index_item = {
-            "page": "index.html",
-            "name": index_title
-        }
-        config['navigation'] = [index_item] + config['navigation']
-    index_items = []
+    # Set up to auto-generate the index
+    index_items = [[] for i in range(pages)]
     preview_matcher = re.compile(r"(<p[^>]*>.*?</p>)")
     slug_matcher = re.compile(r'(<[^>]+class="{0}"[^>]*>[^<]+<[^>]+>)'.format(slug_class))
 
@@ -126,7 +121,7 @@ def main():
 
                 # If configured to auto-generate the index, get the titles and previews from the
                 # matched data in the pages
-                if auto_index and count < index_length:
+                if auto_index:
                     count += 1
                     data = {
                         "link": output_file,
@@ -138,7 +133,9 @@ def main():
                     if paragraphs:
                         for paragraph in paragraphs[0:preview_length]:
                             data['content'] += paragraph + "\n"
-                    index_items.append(data)
+                    index_items[page_num].append(data)
+                    if count > index_length * (page_num + 1):
+                        page_num += 1
 
                 # Generate and write the pages
                 outfile.write(
@@ -148,30 +145,50 @@ def main():
                         body=source
                     )
                 )
+
         # If configured to auto-generate the index, generate it and output it
         if auto_index:
             # Open the index file
-            with open(args.destination + '/index.html', 'w') as index_file:
-                index_str = ''
-                # Generate the page content
-                for ii in index_items:
-                    index_str += '<h2><a href="{link}">{title}</a></h2>\n'.format(
-                        link=ii['link'],
-                        title=ii['title']
+            for i, page in enumerate(index_items):
+                page_num = i + 1
+                if i:
+                    filename = 'index{0}.html'.format(page_num)
+                else:
+                    filename = 'index.html'
+                with open('{0}/{1}'.format(args.destination, filename), 'w') as index_file:
+                    index_str = ''
+                    # Generate the page content
+                    for item in page:
+                        index_str += '<h2><a href="{link}">{title}</a></h2>\n'.format(
+                            link=item['link'],
+                            title=item['title']
+                        )
+                        index_str += '{0}\n'.format(item['slug'])
+                        index_str += item['content']
+                    if len(index_items) > 1:
+                        index_str += '<nav>'
+                        for x in range(1, len(index_items) + 1):
+                            if x == 1:
+                                link = 'index.html'
+                            else:
+                                link = 'index{0}.html'.format(x)
+                            if page_num == x:
+                                index_str += '<span>{0}</span>'.format(x)
+                            else:
+                                index_str += '<span><a href="{0}">{1}</a></span>'.format(link, x)
+                        index_str += '</nav>'
+                    # Generate and write the index
+                    index_file.write(
+                        template.format(
+                            title='Home',
+                            navigation=navigation_format(config['pages'], 'index.html'),
+                            body=index_str
+                        )
                     )
-                    index_str += '{0}\n'.format(ii['slug'])
-                    index_str += ii['content']
-                # Generate and write the index
-                index_file.write(
-                    template.format(
-                        title='Home',
-                        navigation=navigation_format(config['pages'], 'index.html'),
-                        body=index_str
-                    )
-                )
     # If there were any errors, let the user know
     except Exception as e:
-        print('There was a problem processing the site: {0}'.format(e))
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        print('There was a problem processing the site (line {0}): {1}'.format(exc_tb.tb_lineno, e))
         exit()
 
 
